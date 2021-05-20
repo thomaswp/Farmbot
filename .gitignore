@@ -1,0 +1,18 @@
+Assets/Animals/*.png
+Assets/Buildings/*.png
+Assets/Characters
+Assets/Portraits/*.png
+Assets/TerrainFeatures/*.png
+Assets/TileSheets/*.png
+Assets/Assets.index
+
+.vs
+Library
+Packages
+Stardew Valley
+UserSettings
+obj
+Logs
+
+*.meta
+*.asset
