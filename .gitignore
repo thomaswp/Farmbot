@@ -4,6 +4,9 @@ Assets/Characters
 Assets/Portraits/*.png
 Assets/TerrainFeatures/*.png
 Assets/TileSheets/*.png
+Assets/Maps/*.png
+Assets/Maps/*.tmx
+Assets/Maps/*.tmx.meta
 Assets/Assets.index
 
 .vs
@@ -13,4 +16,5 @@ Stardew Valley
 UserSettings
 obj
 Logs
+Temp
 
