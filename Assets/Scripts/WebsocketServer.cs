@@ -20,6 +20,7 @@ public class WebsocketServer
 
     private Thread thread;
     private TcpListener server;
+    private NetworkStream stream;
 
     private ConcurrentQueue<string> messages = new ConcurrentQueue<string>();
 
@@ -32,8 +33,9 @@ public class WebsocketServer
         return Instance;
     }
 
-    public static void SendMessage(string message)
+    public static void SendMessage(string message, bool sendIfDisconnected = false)
     {
+        if (!Instance.connected && !sendIfDisconnected) return;
         Instance.messages.Enqueue(message);
     }
 
@@ -57,9 +59,8 @@ public class WebsocketServer
 
                 Debug.Log("A client connected.");
 
-                NetworkStream stream = client.GetStream();
+                stream = client.GetStream();
 
-                // enter to an infinite cycle to be able to handle every change in stream
                 while (client.Connected)
                 {
                     Thread.Sleep(0);
@@ -69,10 +70,7 @@ public class WebsocketServer
                         string message;
                         if (messages.TryDequeue(out message))
                         {
-                            Debug.Log("Sending: " + message);
-                            byte[] messageBytes = Encoding.UTF8.GetBytes(message);
-                            stream.Write(messageBytes, 0, messageBytes.Length);
-                            stream.Flush();
+                            SendSocketMessage(message);
                         }
                     }
 
@@ -158,6 +156,18 @@ public class WebsocketServer
             }
         });
         thread.Start();
+    }
+
+    private void SendSocketMessage(string message)
+    {
+        byte[] messageBytes = Encoding.UTF8.GetBytes(message);
+        byte length = (byte) messageBytes.Length;
+        byte[] header = new byte[] { 0b10000001, length };
+        //Debug.Log("Sending header: " + string.Join(",", header));
+        //Debug.Log("Sending: " + message);
+        stream.Write(header, 0, header.Length);
+        stream.Write(messageBytes, 0, messageBytes.Length);
+        stream.Flush();
     }
 
     public static void StopInstance()
