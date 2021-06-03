@@ -1,39 +1,44 @@
 
 using UnityEngine;
 
-public class BlocklyBridge : MonoBehaviour
+namespace Farmbot
 {
-    public string url;
-    public int port;
-    public int runSpeed = 10;
-    WebsocketServer websocket;
-
-    private int tick = 0;
-
-
-    // Start is called before the first frame update
-    private void Start()
+    public class BlocklyBridge : MonoBehaviour
     {
-        websocket = WebsocketServer.Start(url, port);
-    }
+        public string url;
+        public int port;
+        public int runSpeed = 10;
+        WebsocketServer websocket;
+
+        private int tick = 0;
 
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void FixedUpdate()
-    {
-        if (tick++ % runSpeed == 0)
+        // Start is called before the first frame update
+        private void Start()
         {
-            WebsocketServer.SendMessage("stepCode");
+            BlocklyGenerator.GenerateBlocks();
+            websocket = WebsocketServer.Start(url, port);
         }
 
+
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
+
+        private void FixedUpdate()
+        {
+            if (tick++ % runSpeed == 0)
+            {
+                WebsocketServer.SendMessage("stepCode");
+            }
+
+        }
+
+        void OnApplicationQuit()
+        {
+        }
     }
 
-    void OnApplicationQuit()
-    {
-    }
 }

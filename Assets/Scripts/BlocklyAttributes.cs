@@ -4,19 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class Scriptable : Attribute
+namespace Farmbot
 {
+    public class Scriptable : Attribute
+    {
 
-}
+    }
 
-public class ScriptableBehavior : Scriptable
-{
-}
+    public class ScriptableBehavior : Scriptable
+    {
+    }
 
-public class ScriptableMethod : Scriptable
-{
-}
+    public class ScriptableMethod : Scriptable
+    {
+    }
 
-public class ScriptableProperty: Scriptable
-{
+    public class ScriptableProperty : Scriptable
+    {
+    }
+
 }

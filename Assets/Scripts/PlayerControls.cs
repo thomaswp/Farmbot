@@ -3,40 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[RequireComponent(typeof(ActorActions))]
-public class PlayerControls : MonoBehaviour
+namespace Farmbot
 {
-    private ActorActions actions;
-
-    // Start is called before the first frame update
-    void Start()
+    [RequireComponent(typeof(ActorActions))]
+    public class PlayerControls : MonoBehaviour
     {
-        actions = GetComponent<ActorActions>();
-    }
+        private ActorActions actions;
 
-    // Update is called once per frame
-    void Update()
-    {
-
-        if (actions.CanMove)
+        // Start is called before the first frame update
+        void Start()
         {
-            if (Input.GetKey(KeyCode.D))
+            actions = GetComponent<ActorActions>();
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+
+            if (actions.CanMove)
             {
-                actions.Move(Direction.Right);
-            }
-            if (Input.GetKey(KeyCode.W))
-            {
-                actions.Move(Direction.Up);
-            }
-            if (Input.GetKey(KeyCode.A))
-            {
-                actions.Move(Direction.Left);
-            }
-            if (Input.GetKey(KeyCode.S))
-            {
-                actions.Move(Direction.Down);
+                if (Input.GetKey(KeyCode.D))
+                {
+                    actions.Move(Direction.Right);
+                }
+                if (Input.GetKey(KeyCode.W))
+                {
+                    actions.Move(Direction.Up);
+                }
+                if (Input.GetKey(KeyCode.A))
+                {
+                    actions.Move(Direction.Left);
+                }
+                if (Input.GetKey(KeyCode.S))
+                {
+                    actions.Move(Direction.Down);
+                }
             }
         }
-    }
 
+    }
 }

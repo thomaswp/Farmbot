@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-public enum Direction
+namespace Farmbot
 {
-    Up, Left, Right, Down
+    public enum Direction
+    {
+        Up, Left, Right, Down
+    }
+
 }
