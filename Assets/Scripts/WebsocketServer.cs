@@ -9,6 +9,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using UnityEngine;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Farmbot
 {
@@ -16,6 +18,9 @@ namespace Farmbot
     {
 
         public static WebsocketServer Instance { get; private set; }
+
+        public delegate void ConnectedEvent();
+        public static event ConnectedEvent OnConnected;
 
         public readonly string url;
         public readonly int port;
@@ -33,6 +38,11 @@ namespace Farmbot
             if (Instance != null) throw new Exception("Socket already running");
             Instance = new WebsocketServer(url, port);
             return Instance;
+        }
+
+        public static void SendMessage(JsonMessage data, bool sendIfDisconnected = false)
+        {
+            SendMessage(data.ToJson(), sendIfDisconnected);
         }
 
         public static void SendMessage(string message, bool sendIfDisconnected = false)
@@ -110,6 +120,8 @@ namespace Farmbot
                                 "Sec-WebSocket-Accept: " + swkaSha1Base64 + "\r\n\r\n");
 
                             stream.Write(response, 0, response.Length);
+
+                            OnConnected();
                         }
                         else
                         {
@@ -122,17 +134,17 @@ namespace Farmbot
 
                             if (msglen == 126)
                             {
-                            // was ToUInt16(bytes, offset) but the result is incorrect
-                            msglen = BitConverter.ToUInt16(new byte[] { bytes[3], bytes[2] }, 0);
+                                // was ToUInt16(bytes, offset) but the result is incorrect
+                                msglen = BitConverter.ToUInt16(new byte[] { bytes[3], bytes[2] }, 0);
                                 offset = 4;
                             }
                             else if (msglen == 127)
                             {
                                 Debug.Log("TODO: msglen == 127, needs qword to store msglen");
-                            // i don't really know the byte order, please edit this
-                            // msglen = BitConverter.ToUInt64(new byte[] { bytes[5], bytes[4], bytes[3], bytes[2], bytes[9], bytes[8], bytes[7], bytes[6] }, 0);
-                            // offset = 10;
-                        }
+                                // i don't really know the byte order, please edit this
+                                // msglen = BitConverter.ToUInt64(new byte[] { bytes[5], bytes[4], bytes[3], bytes[2], bytes[9], bytes[8], bytes[7], bytes[6] }, 0);
+                                // offset = 10;
+                            }
 
                             if (msglen == 0)
                                 Debug.Log("msglen == 0");
@@ -163,12 +175,27 @@ namespace Farmbot
         private void SendSocketMessage(string message)
         {
             byte[] messageBytes = Encoding.UTF8.GetBytes(message);
-            byte length = (byte)messageBytes.Length;
-            byte[] header = new byte[] { 0b10000001, length };
-            //Debug.Log("Sending header: " + string.Join(",", header));
-            //Debug.Log("Sending: " + message);
-            stream.Write(header, 0, header.Length);
-            stream.Write(messageBytes, 0, messageBytes.Length);
+            int offset = 0;
+            bool continuation = false;
+            while (offset < messageBytes.Length)
+            {
+                int remaining = message.Length - offset;
+                byte length = (byte)Math.Min(125, remaining);
+                byte opcode = 0b10000001;
+                // This is a continuation if we haven't finished the message
+                if (continuation) opcode &= 0b11111110;
+                // This is not finalized if we have more than 125 remaining
+                if (remaining > 125) opcode &= 0b01111111;
+                byte[] header = new byte[] { opcode, length };
+                //Debug.Log("Sending header: " + string.Join(",", header));
+                //Debug.Log("Sending: " + message);
+                stream.Write(header, 0, header.Length);
+                stream.Write(messageBytes, offset, length);
+                Debug.Log(offset + "/" + messageBytes.Length);
+                offset += length;
+                continuation = true;
+            }
+            
             stream.Flush();
         }
 
@@ -189,6 +216,24 @@ namespace Farmbot
             {
                 Debug.Log(e);
             }
+        }
+    }
+
+    [Serializable]
+    public class JsonMessage
+    {
+        public string type;
+        public object data;
+
+        public JsonMessage(string type, object data)
+        {
+            this.type = type;
+            this.data = data;
+        }
+
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this);
         }
     }
 }

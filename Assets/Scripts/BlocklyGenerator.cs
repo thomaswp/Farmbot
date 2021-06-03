@@ -9,7 +9,7 @@ namespace Farmbot
 {
     public class BlocklyGenerator
     {
-        public static void GenerateBlocks()
+        public static JsonMessage GenerateBlocks()
         {
             var q = from t in Assembly.GetExecutingAssembly().GetTypes()
                     where t.IsClass && t.Namespace == "Farmbot"
@@ -48,7 +48,7 @@ namespace Farmbot
                 }
             }
 
-            Debug.Log(JsonConvert.SerializeObject(methodDefinitions));
+            return new JsonMessage("DefineBlocks", methodDefinitions);
         }
     }
 

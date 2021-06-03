@@ -16,10 +16,14 @@ namespace Farmbot
         // Start is called before the first frame update
         private void Start()
         {
-            BlocklyGenerator.GenerateBlocks();
-            websocket = WebsocketServer.Start(url, port);
-        }
+            JsonMessage blocksJSON = BlocklyGenerator.GenerateBlocks();
 
+            websocket = WebsocketServer.Start(url, port);
+            WebsocketServer.OnConnected += () =>
+            {
+                WebsocketServer.SendMessage(blocksJSON);
+            };
+        }
 
         // Update is called once per frame
         void Update()
@@ -31,7 +35,7 @@ namespace Farmbot
         {
             if (tick++ % runSpeed == 0)
             {
-                WebsocketServer.SendMessage("stepCode");
+                //WebsocketServer.SendMessage("stepCode");
             }
 
         }
