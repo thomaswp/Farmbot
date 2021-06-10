@@ -22,6 +22,9 @@ namespace Farmbot
         public delegate void ConnectedEvent();
         public static event ConnectedEvent OnConnected;
 
+        public delegate void OnMessageEvent(string data);
+        public static event OnMessageEvent OnMessage;
+
         public readonly string url;
         public readonly int port;
 
@@ -159,6 +162,7 @@ namespace Farmbot
 
                                 string text = Encoding.UTF8.GetString(decoded);
                                 Debug.Log(text);
+                                OnMessage(text);
 
                                 if (text == "Disconnect") break;
                             }

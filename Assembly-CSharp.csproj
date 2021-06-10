@@ -64,6 +64,7 @@
     <Compile Include="Assets\Scripts\ActorActions.cs" />
     <Compile Include="Assets\Scripts\BlocklyEnums.cs" />
     <Compile Include="Assets\Scripts\CameraControl.cs" />
+    <Compile Include="Assets\UnityMainThreadDispatcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\JsonDotNet\link.xml" />

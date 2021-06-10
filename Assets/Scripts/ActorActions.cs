@@ -5,7 +5,8 @@ using UnityEngine.Tilemaps;
 
 namespace Farmbot
 {
-    [ScriptableBehavior]
+    [ScriptableBehavior("Movement", 60)]
+    [RequireComponent(typeof(Collider2D))]
     [RequireComponent(typeof(SpriteRenderer))]
     public class ActorActions : MonoBehaviour
     {
@@ -55,7 +56,7 @@ namespace Farmbot
             }
         }
 
-        T ExecuteMethod<T>(T method) where T : AsyncMethod
+        public T ExecuteMethod<T>(T method) where T : AsyncMethod
         {
             executingMethods.Add(method);
             return method;
@@ -68,6 +69,17 @@ namespace Farmbot
             return target;
         }
 
+        private void OnMouseDown()
+        {
+            Debug.Log("Clicked!");
+            OnClick();
+        }
+
+        [ScriptableEvent]
+        public void OnClick()
+        {
+            BlocklyGenerator.SendEvent(this, System.Reflection.MethodBase.GetCurrentMethod().Name);
+        }
 
         [ScriptableMethod]
         public AsyncFunction<Direction> Direction()

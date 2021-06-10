@@ -9,22 +9,29 @@ namespace Farmbot
 {
     public class BlocklyGenerator
     {
+        static Dictionary<string, MethodInfo> methodMap;
+
         public static JsonMessage GenerateBlocks()
         {
+            methodMap = new Dictionary<string, MethodInfo>();
+
             var q = from t in Assembly.GetExecutingAssembly().GetTypes()
                     where t.IsClass && t.Namespace == "Farmbot"
                     select t;
-            var scriptables = q.Where(t => Attribute.IsDefined(t, typeof(Scriptable)));
+            var scriptables = q.Where(t => Attribute.IsDefined(t, typeof(ScriptableBehavior)));
 
-            List<BlocklyMethod> methodDefinitions = new List<BlocklyMethod>();
+            BlocklyDefinitions definitions = new BlocklyDefinitions();
+
             foreach (Type scriptable in scriptables)
             {
-                string category = scriptable.Name;
+                ScriptableBehavior behavior = (ScriptableBehavior)Attribute.GetCustomAttribute(scriptable, typeof(ScriptableBehavior));
+
+                string category = behavior.name;
                 var methods = scriptable.GetMethods()
                     .Where(method => Attribute.IsDefined(method, typeof(ScriptableMethod)));
                 foreach (MethodInfo method in methods)
                 {
-                    BlocklyMethod blocklyMethod = new BlocklyMethod(method.Name, category);
+                    BlocklyMethod blocklyMethod = new BlocklyMethod(method.Name, category, false);
                     if (!typeof(AsyncMethod).IsAssignableFrom(method.ReturnType))
                     {
                         blocklyMethod.returnType = new BlocklyType(method.ReturnType);
@@ -44,11 +51,67 @@ namespace Farmbot
                         blocklyMethod.parameters.Add(new BlocklyParameter(param.Name, new BlocklyType(param.ParameterType)));
                     }
                     //Debug.Log(scriptable.Name + "." + method.Name);
-                    methodDefinitions.Add(blocklyMethod);
+                    definitions.methods.Add(blocklyMethod);
+                    methodMap.Add(blocklyMethod.name, method);
                 }
+
+                var events = scriptable.GetMethods()
+                    .Where(method => Attribute.IsDefined(method, typeof(ScriptableEvent)));
+                foreach (MethodInfo method in events)
+                {
+                    BlocklyMethod blocklyMethod = new BlocklyMethod(method.Name, category, true);
+                    definitions.methods.Add(blocklyMethod);
+                }
+
+                definitions.categories.Add(new BlocklyCategory(category, behavior.color));
             }
 
-            return new JsonMessage("DefineBlocks", methodDefinitions);
+            return new JsonMessage("DefineBlocks", definitions);
+        }
+
+        internal static AsyncMethod Call(GameObject target, string name)
+        {
+            if (!methodMap.ContainsKey(name))
+            {
+                Debug.Log("Unknown method: " + name);
+                return null;
+            }
+
+            var method = methodMap[name];
+            var component = target.GetComponent(method.DeclaringType);
+            AsyncMethod async = (AsyncMethod) method.Invoke(component, new object[0]);
+            return async;
+        }
+
+        internal static void SendEvent(MonoBehaviour target, string eventName)
+        {
+            WebsocketServer.SendMessage(new JsonMessage("TriggerEvent", new
+            {
+                name = eventName,
+                target = target.name,
+            }));
+        }
+    }
+
+    [Serializable]
+    class BlocklyDefinitions
+    {
+        public List<BlocklyMethod> methods = new List<BlocklyMethod>();
+        //public List<BlocklyMethod> events = new List<BlocklyMethod>();
+        public List<BlocklyCategory> categories = new List<BlocklyCategory>();
+
+    }
+
+    [Serializable]
+    class BlocklyCategory
+    {
+        public string name;
+        public int color;
+
+        public BlocklyCategory(string name, int color)
+        {
+            this.name = name;
+            this.color = color;
         }
     }
 
@@ -57,13 +120,15 @@ namespace Farmbot
     {
         public string name;
         public string category;
+        public bool isEvent;
         public BlocklyType returnType;
         public List<BlocklyParameter> parameters = new List<BlocklyParameter>();
 
-        public BlocklyMethod(string name, string category)
+        public BlocklyMethod(string name, string category, bool isEvent)
         {
             this.name = name;
             this.category = category;
+            this.isEvent = isEvent;
         }
     }
 
