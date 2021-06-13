@@ -85,10 +85,11 @@ namespace Farmbot
 
         internal static void SendEvent(MonoBehaviour target, string eventName)
         {
+            GameObject obj = target.gameObject;
             WebsocketServer.SendMessage(new JsonMessage("TriggerEvent", new
             {
-                name = eventName,
-                target = target.name,
+                eventName = eventName,
+                targetID = obj.GetInstanceID(),
             }));
         }
     }
@@ -180,6 +181,11 @@ namespace Farmbot
     {
         protected List<Func<bool>> todo = new List<Func<bool>>();
 
+        public virtual object GetReturnValue()
+        {
+            return null;
+        }
+
         public AsyncMethod UpdateUntil(Func<bool> until)
         {
             todo.Add(until);
@@ -207,7 +213,7 @@ namespace Farmbot
     {
         private T value;
 
-        public T GetReturnValue()
+        public override object GetReturnValue()
         {
             return value;
         }

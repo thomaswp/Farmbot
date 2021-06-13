@@ -161,7 +161,7 @@ namespace Farmbot
                                     decoded[i] = (byte)(bytes[offset + i] ^ masks[i % 4]);
 
                                 string text = Encoding.UTF8.GetString(decoded);
-                                Debug.Log(text);
+                                //Debug.Log(text);
                                 OnMessage(text);
 
                                 if (text == "Disconnect") break;
@@ -178,6 +178,7 @@ namespace Farmbot
 
         private void SendSocketMessage(string message)
         {
+            Debug.Log("Sending: " + message);
             byte[] messageBytes = Encoding.UTF8.GetBytes(message);
             int offset = 0;
             bool continuation = false;
@@ -192,10 +193,9 @@ namespace Farmbot
                 if (remaining > 125) opcode &= 0b01111111;
                 byte[] header = new byte[] { opcode, length };
                 //Debug.Log("Sending header: " + string.Join(",", header));
-                //Debug.Log("Sending: " + message);
                 stream.Write(header, 0, header.Length);
                 stream.Write(messageBytes, offset, length);
-                Debug.Log(offset + "/" + messageBytes.Length);
+                //Debug.Log(offset + "/" + messageBytes.Length);
                 offset += length;
                 continuation = true;
             }

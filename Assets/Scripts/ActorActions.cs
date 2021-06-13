@@ -20,7 +20,26 @@ namespace Farmbot
         private float transitionTime = 0;
         private Vector3Int moveStart;
 
-        private Direction direction;
+        private Direction _direction;
+        public Direction Direction
+        {
+            get { return _direction; }
+            set
+            {
+                _direction = value;
+                if (Animator != null)
+                {
+                    switch(_direction)
+                    {
+                        case Farmbot.Direction.Down: Animator.SetFloat("DirY", -1); break;
+                        case Farmbot.Direction.Up: Animator.SetFloat("DirY", 1); break;
+                        case Farmbot.Direction.Left: Animator.SetFloat("DirX", -1); break;
+                        case Farmbot.Direction.Right: Animator.SetFloat("DirX", 1); break;
+                    }
+                    
+                }
+            }
+        }
 
         private List<AsyncMethod> executingMethods = new List<AsyncMethod>();
 
@@ -62,6 +81,11 @@ namespace Farmbot
             return method;
         }
 
+        public AsyncMethod ExecuteMethod()
+        {
+            return ExecuteMethod(new AsyncMethod());
+        }
+
         private Vector3 PositionFromGrid(Vector3Int cell)
         {
             Vector3 target = grid.CellToLocal(cell);
@@ -82,15 +106,40 @@ namespace Farmbot
         }
 
         [ScriptableMethod]
-        public AsyncFunction<Direction> Direction()
+        public AsyncMethod TurnRight()
         {
-            return ExecuteMethod(new AsyncFunction<Direction>().Return(() => direction));
+            return Turn(1);
+        }
+
+        [ScriptableMethod]
+        public AsyncMethod TurnLeft()
+        {
+            return Turn(-1);
+        }
+
+        private AsyncMethod Turn(int change)
+        {
+            Debug.Log("!");
+            return ExecuteMethod().Do(() =>
+            {
+                Direction = (Direction)((((int)Direction) + change) % 4);
+                Debug.Log(Direction);
+            });
         }
 
         [ScriptableMethod]
         public AsyncMethod MoveForward()
         {
-            return Move(direction);
+            return Move(Direction);
+        }
+
+        [ScriptableMethod]
+        public AsyncMethod FaceDirection(Direction direction)
+        {
+            return ExecuteMethod().Do(() =>
+            {
+                Direction = direction;
+            });
         }
 
         [ScriptableMethod]
@@ -109,12 +158,6 @@ namespace Farmbot
                 .UpdateUntil(() => transitionTime == 0)
                 .Do(() =>
                 {
-                    if (Animator != null)
-                    {
-                        Animator.SetFloat("DirX", dx);
-                        Animator.SetFloat("DirY", dy);
-                    }
-
                     Vector3Int targetCell = cell + new Vector3Int(dx, dy, 0);
 
                     if (collisionTilemap)

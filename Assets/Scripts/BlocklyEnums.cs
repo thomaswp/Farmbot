@@ -8,7 +8,7 @@ namespace Farmbot
 {
     public enum Direction
     {
-        Up, Left, Right, Down
+        Up, Right, Down, Left
     }
 
 }
