@@ -9,11 +9,12 @@ namespace Farmbot
 {
     public class BlocklyGenerator
     {
-        static Dictionary<string, MethodInfo> methodMap;
+        static Dictionary<string, MethodInfo> methodMap, eventMap;
 
         public static JsonMessage GenerateBlocks()
         {
             methodMap = new Dictionary<string, MethodInfo>();
+            eventMap = new Dictionary<string, MethodInfo>();
 
             var q = from t in Assembly.GetExecutingAssembly().GetTypes()
                     where t.IsClass && t.Namespace == "Farmbot"
@@ -63,6 +64,8 @@ namespace Farmbot
 
                     BlocklyEvent blocklyEvent = new BlocklyEvent(method.Name, category, scriptableEvent.stackable);
                     definitions.events.Add(blocklyEvent);
+
+                    eventMap.Add(blocklyEvent.name, method);
                 }
 
                 definitions.categories.Add(new BlocklyCategory(category, behavior.color));
@@ -75,7 +78,11 @@ namespace Farmbot
         {
             if (!methodMap.ContainsKey(name))
             {
-                Debug.Log("Unknown method: " + name);
+                if (!eventMap.ContainsKey(name))
+                {
+                    Debug.Log("Unknown method: " + name);
+                }
+
                 return null;
             }
 

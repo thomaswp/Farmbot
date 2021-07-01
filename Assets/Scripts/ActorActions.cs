@@ -114,7 +114,6 @@ namespace Farmbot
 
         private AsyncMethod Turn(int change)
         {
-            Debug.Log("!");
             return Interpreter.ExecuteMethod(MOVEMENT_CATEGORY).Do(() =>
             {
                 Direction = (Direction)((((int)Direction) + change) % 4);

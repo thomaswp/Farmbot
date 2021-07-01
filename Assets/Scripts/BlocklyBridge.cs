@@ -29,10 +29,10 @@ namespace Farmbot
             string targetName = target.name;
 
             websocket = WebsocketServer.Start(url, port);
+            WebsocketServer.OnMessage += WebsocketServer_OnMessage;
             WebsocketServer.OnConnected += () =>
             {
                 WebsocketServer.SendMessage(blocksJSON);
-                WebsocketServer.OnMessage += WebsocketServer_OnMessage;
 
                 WebsocketServer.SendMessage(new JsonMessage("SetTarget", new { 
                     targetID = targetID,
