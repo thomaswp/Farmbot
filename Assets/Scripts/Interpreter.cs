@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Farmbot
 {
-    public class Interpreter : MonoBehaviour
+    public class Interpreter : MonoBehaviour, IPointerClickHandler
     {
         private static Dictionary<int, Interpreter> interpreterMap = new Dictionary<int, Interpreter>();
 
@@ -46,8 +47,33 @@ namespace Farmbot
             return executingMethods.Where(m => m.BlockingCategory == category).Count();
         }
 
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            
+        }
+
+        void OnMouseOver()
+        {
+            if (Input.GetMouseButtonDown(1))
+            {
+                Debug.Log("Setting target to: " + gameObject.name);
+                SetTarget();
+            }
+        }
+
+        public void SetTarget()
+        {
+            WebsocketServer.SendMessage(new JsonMessage("SetTarget", new
+            {
+                targetID = gameObject.GetInstanceID(),
+                targetName = gameObject.name,
+                // TODO: add code
+            }));
+        }
+
         void Update()
         {
+
             HashSet<string> blockingCategories = new HashSet<string>();
             for (int i = 0; i < executingMethods.Count; i++)
             {

@@ -90,8 +90,11 @@ namespace Farmbot
 
         private void OnMouseDown()
         {
-            Debug.Log("Clicked!");
-            OnClick();
+            if (Input.GetMouseButtonDown(0))
+            {
+                Debug.Log("Clicked!");
+                OnClick();
+            }
         }
 
         [ScriptableEvent(false)]

@@ -13,7 +13,7 @@ namespace Farmbot
         public int runSpeed = 10;
         WebsocketServer websocket;
 
-        public GameObject target;
+        public GameObject startingTarget;
 
         private int tick = 0;
 
@@ -24,9 +24,6 @@ namespace Farmbot
             Application.runInBackground = true;
 
             JsonMessage blocksJSON = BlocklyGenerator.GenerateBlocks();
-            
-            int targetID = target.GetInstanceID();
-            string targetName = target.name;
 
             websocket = WebsocketServer.Start(url, port);
             WebsocketServer.OnMessage += WebsocketServer_OnMessage;
@@ -34,11 +31,13 @@ namespace Farmbot
             {
                 WebsocketServer.SendMessage(blocksJSON);
 
-                WebsocketServer.SendMessage(new JsonMessage("SetTarget", new { 
-                    targetID = targetID,
-                    targetName = targetName,
-                    // TODO: add code
-                }));
+                UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                {
+                    if (startingTarget)
+                    {
+                        startingTarget.GetComponent<Interpreter>().SetTarget();
+                    }
+                });
             };
         }
 
