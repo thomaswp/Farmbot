@@ -31,7 +31,7 @@ namespace Farmbot
                     .Where(method => Attribute.IsDefined(method, typeof(ScriptableMethod)));
                 foreach (MethodInfo method in methods)
                 {
-                    BlocklyMethod blocklyMethod = new BlocklyMethod(method.Name, category, false);
+                    BlocklyMethod blocklyMethod = new BlocklyMethod(method.Name, category);
                     if (!typeof(AsyncMethod).IsAssignableFrom(method.ReturnType))
                     {
                         blocklyMethod.returnType = new BlocklyType(method.ReturnType);
@@ -59,8 +59,10 @@ namespace Farmbot
                     .Where(method => Attribute.IsDefined(method, typeof(ScriptableEvent)));
                 foreach (MethodInfo method in events)
                 {
-                    BlocklyMethod blocklyMethod = new BlocklyMethod(method.Name, category, true);
-                    definitions.methods.Add(blocklyMethod);
+                    ScriptableEvent scriptableEvent = (ScriptableEvent)Attribute.GetCustomAttribute(method, typeof(ScriptableEvent));
+
+                    BlocklyEvent blocklyEvent = new BlocklyEvent(method.Name, category, scriptableEvent.stackable);
+                    definitions.events.Add(blocklyEvent);
                 }
 
                 definitions.categories.Add(new BlocklyCategory(category, behavior.color));
@@ -98,7 +100,7 @@ namespace Farmbot
     class BlocklyDefinitions
     {
         public List<BlocklyMethod> methods = new List<BlocklyMethod>();
-        //public List<BlocklyMethod> events = new List<BlocklyMethod>();
+        public List<BlocklyEvent> events = new List<BlocklyEvent>();
         public List<BlocklyCategory> categories = new List<BlocklyCategory>();
 
     }
@@ -116,21 +118,35 @@ namespace Farmbot
         }
     }
 
-    [Serializable]
-    class BlocklyMethod
+    abstract class BlocklyCallable
     {
         public string name;
         public string category;
-        public bool isEvent;
-        public BlocklyType returnType;
-        public List<BlocklyParameter> parameters = new List<BlocklyParameter>();
 
-        public BlocklyMethod(string name, string category, bool isEvent)
+        public BlocklyCallable(string name, string category)
         {
             this.name = name;
             this.category = category;
-            this.isEvent = isEvent;
         }
+    }
+
+    class BlocklyEvent : BlocklyCallable
+    {
+        public bool isStackable;
+
+        public BlocklyEvent(string name, string category, bool isStackable) : base(name, category)
+        {
+            this.isStackable = isStackable;
+        }
+    }
+
+    [Serializable]
+    class BlocklyMethod : BlocklyCallable
+    {
+        public BlocklyType returnType;
+        public List<BlocklyParameter> parameters = new List<BlocklyParameter>();
+
+        public BlocklyMethod(string name, string category) : base(name, category) { }
     }
 
     [Serializable]
@@ -181,6 +197,8 @@ namespace Farmbot
     {
         protected List<Func<bool>> todo = new List<Func<bool>>();
 
+        public string BlockingCategory { get; private set; }
+
         public virtual object GetReturnValue()
         {
             return null;
@@ -199,6 +217,12 @@ namespace Farmbot
                 action();
                 return true;
             });
+            return this;
+        }
+
+        public AsyncMethod SetBlockingCategory(string category)
+        {
+            BlockingCategory = category;
             return this;
         }
 

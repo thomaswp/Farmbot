@@ -14,8 +14,6 @@ namespace Farmbot
         WebsocketServer websocket;
 
         public GameObject target;
-        // TODO: Have a way to invoke all this
-        private ActorActions eventRunner;
 
         private int tick = 0;
 
@@ -24,8 +22,6 @@ namespace Farmbot
         private void Start()
         {
             Application.runInBackground = true;
-            eventRunner = (ActorActions)target.GetComponent(typeof(ActorActions));
-
 
             JsonMessage blocksJSON = BlocklyGenerator.GenerateBlocks();
             
@@ -60,31 +56,42 @@ namespace Farmbot
                 Debug.Log("Cannot parse message!");
                 return;
             }
+            UnityMainThreadDispatcher.Instance().Enqueue(() => RunMethod(data));
+        }
+
+        private static void RunMethod(JObject data)
+        {
             string methodName = (string)data["methodName"];
             string threadID = (string)data["threadID"];
-            UnityMainThreadDispatcher.Instance().Enqueue(() =>
+            int targetID = (int)data["targetID"];
+
+            Interpreter interpreter = Interpreter.GetInterpreter(targetID);
+            if (interpreter == null)
             {
-                // TODO: Get and use target
-                var method = BlocklyGenerator.Call(target, methodName);
-                object returnValue = method == null ? null : method.GetReturnValue();
-                Action onFinished = () =>
+                Debug.LogWarning("Missing interpreter for targetID: " + targetID);
+                return;
+            }
+            GameObject target = interpreter.gameObject;
+
+            var method = BlocklyGenerator.Call(target, methodName);
+            object returnValue = method == null ? null : method.GetReturnValue();
+            Action onFinished = () =>
+            {
+                WebsocketServer.SendMessage(new JsonMessage("BlockFinished", new
                 {
-                    WebsocketServer.SendMessage(new JsonMessage("BlockFinished", new
-                    {
-                        targetID = target.GetInstanceID(),
-                        threadID = threadID,
-                        returnValue = returnValue,
-                    }));
-                };
-                if (method == null)
-                {
-                    onFinished();
-                }
-                else
-                {
-                    method.Do(onFinished);
-                }
-            });
+                    targetID = targetID,
+                    threadID = threadID,
+                    returnValue = returnValue,
+                }));
+            };
+            if (method == null)
+            {
+                onFinished();
+            }
+            else
+            {
+                method.Do(onFinished);
+            }
         }
 
         // Update is called once per frame

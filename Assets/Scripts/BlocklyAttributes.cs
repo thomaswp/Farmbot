@@ -32,6 +32,12 @@ namespace Farmbot
 
     public class ScriptableEvent : Scriptable
     {
+        public readonly bool stackable;
+
+        public ScriptableEvent(bool stackable = false)
+        {
+            this.stackable = stackable;
+        }
     }
 
 }
