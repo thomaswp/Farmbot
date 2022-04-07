@@ -74,31 +74,52 @@ namespace Farmbot
             return new JsonMessage("DefineBlocks", definitions);
         }
 
-        internal static AsyncMethod Call(GameObject target, string name)
+        internal static AsyncMethod Call(GameObject target, string name, object[] args)
         {
             if (!methodMap.ContainsKey(name))
             {
                 if (!eventMap.ContainsKey(name))
                 {
-                    Debug.Log("Unknown method: " + name);
+                    Debug.LogWarning("Unknown method: " + name);
                 }
 
                 return null;
             }
 
             var method = methodMap[name];
+            var @params = method.GetParameters();
+            if (@params.Length != args.Length)
+            {
+                Debug.LogWarning($"Incorrect number of args for {name}: {args.Length} vs {@params.Length}");
+                return null;
+            }
+            for (int i = 0; i < args.Length; i++)
+            {
+                var paramType = @params[i].ParameterType;
+                object arg = args[i];
+                if (paramType.IsEnum && arg is string)
+                {
+                    args[i] = arg = Enum.Parse(paramType, (string)arg);
+                }
+                var argType = arg == null ? typeof(object) : arg.GetType();
+                if (!paramType.IsAssignableFrom(argType))
+                {
+                    Debug.Log($"For arg {i} of {name}: cannot assign {argType} {arg} to {paramType}");
+                    return null;
+                }
+            }
             var component = target.GetComponent(method.DeclaringType);
-            AsyncMethod async = (AsyncMethod) method.Invoke(component, new object[0]);
+            AsyncMethod async = (AsyncMethod) method.Invoke(component, args);
             return async;
         }
 
         internal static void SendEvent(MonoBehaviour target, string eventName)
         {
-            GameObject obj = target.gameObject;
+            string id = target.GetComponent<Interpreter>().Guid;
             WebsocketServer.SendMessage(new JsonMessage("TriggerEvent", new
             {
                 eventName = eventName,
-                targetID = obj.GetInstanceID(),
+                targetID = id,
             }));
         }
     }

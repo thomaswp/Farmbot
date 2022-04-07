@@ -10,9 +10,11 @@ namespace Farmbot
 {
     public class Interpreter : MonoBehaviour, IPointerClickHandler
     {
-        private static Dictionary<int, Interpreter> interpreterMap = new Dictionary<int, Interpreter>();
+        public string Guid = System.Guid.NewGuid().ToString();
 
-        public static Interpreter GetInterpreter(int instanceID)
+        private static Dictionary<string, Interpreter> interpreterMap = new Dictionary<string, Interpreter>();
+
+        public static Interpreter GetInterpreter(string instanceID)
         {
             if (!interpreterMap.ContainsKey(instanceID))
                 return null;
@@ -23,7 +25,7 @@ namespace Farmbot
 
         public void Start()
         {
-            interpreterMap.Add(gameObject.GetInstanceID(), this);
+            interpreterMap.Add(Guid, this);
         }
 
         public T ExecuteMethod<T>(T method) where T : AsyncMethod
@@ -65,9 +67,9 @@ namespace Farmbot
         {
             WebsocketServer.SendMessage(new JsonMessage("SetTarget", new
             {
-                targetID = gameObject.GetInstanceID(),
+                targetID = Guid,
                 targetName = gameObject.name,
-                // TODO: add code
+                code = GameState.Instance.GetRobot(Guid).Code,
             }));
         }
 

@@ -21,7 +21,7 @@ namespace Farmbot
         private float transitionTime = 0;
         private Vector3Int moveStart;
 
-        private Direction _direction;
+        private Direction _direction = Direction.Down;
         public Direction Direction
         {
             get { return _direction; }
@@ -119,7 +119,7 @@ namespace Farmbot
         {
             return Interpreter.ExecuteMethod(MOVEMENT_CATEGORY).Do(() =>
             {
-                Direction = (Direction)((((int)Direction) + change) % 4);
+                Direction = (Direction)((((int)Direction) + change + 4) % 4);
                 Debug.Log(Direction);
             });
         }

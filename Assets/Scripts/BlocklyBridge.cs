@@ -33,12 +33,19 @@ namespace Farmbot
 
                 UnityMainThreadDispatcher.Instance().Enqueue(() =>
                 {
+                    SyncCode();
                     if (startingTarget)
                     {
                         startingTarget.GetComponent<Interpreter>().SetTarget();
                     }
                 });
             };
+        }
+
+        private void SyncCode()
+        {
+            // TODO: Should probably only send relevant data
+            WebsocketServer.SendMessage(new JsonMessage("SyncCode", GameState.Instance.Robots));
         }
 
         private void WebsocketServer_OnMessage(string dataString)
@@ -55,14 +62,36 @@ namespace Farmbot
                 Debug.Log("Cannot parse message!");
                 return;
             }
-            UnityMainThreadDispatcher.Instance().Enqueue(() => RunMethod(data));
+            UnityMainThreadDispatcher.Instance().Enqueue(() => HandleMessage(data));
+        }
+
+        private static void HandleMessage(JObject message)
+        {
+            string type = (string)message["type"];
+            JObject data = (JObject)message["data"];
+            switch (type)
+            {
+                case "call": RunMethod(data); break;
+                case "save": SaveCode(data); break;
+                default: Debug.LogWarning("Unknown type: " + type); break;
+            }
+        }
+
+        private static void SaveCode(JObject data)
+        {
+            string targetID = (string)data["targetID"];
+            string codeXML = (string)data["code"];
+            GameState.Instance.GetRobot(targetID).Code = codeXML;
+            GameState.SaveJSON();
         }
 
         private static void RunMethod(JObject data)
         {
             string methodName = (string)data["methodName"];
             string threadID = (string)data["threadID"];
-            int targetID = (int)data["targetID"];
+            string targetID = (string)data["targetID"];
+            JArray argsArray = (JArray)data["args"];
+            object[] args = argsArray.ToObject<object[]>();
 
             Interpreter interpreter = Interpreter.GetInterpreter(targetID);
             if (interpreter == null)
@@ -72,7 +101,7 @@ namespace Farmbot
             }
             GameObject target = interpreter.gameObject;
 
-            var method = BlocklyGenerator.Call(target, methodName);
+            var method = BlocklyGenerator.Call(target, methodName, args);
             object returnValue = method == null ? null : method.GetReturnValue();
             Action onFinished = () =>
             {
