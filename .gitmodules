@@ -1,0 +1,3 @@
+[submodule "Assets/BlocklyBridge"]
+	path = Assets/BlocklyBridge
+	url = https://github.com/thomaswp/BlocklyBridge.git

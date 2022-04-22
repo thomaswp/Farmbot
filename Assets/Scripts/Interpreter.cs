@@ -1,31 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using BlocklyBridge;
 
 namespace Farmbot
 {
-    public class Interpreter : MonoBehaviour, IPointerClickHandler
+    public class Interpreter : MonoBehaviour, IPointerClickHandler, IProgrammable
     {
         public string Guid = System.Guid.NewGuid().ToString();
 
-        private static Dictionary<string, Interpreter> interpreterMap = new Dictionary<string, Interpreter>();
-
-        public static Interpreter GetInterpreter(string instanceID)
+        public string GetGuid()
         {
-            if (!interpreterMap.ContainsKey(instanceID))
-                return null;
-            return interpreterMap[instanceID];
+            return Guid;
+        }
+
+        public string GetName()
+        {
+            return gameObject.name;
+        }
+
+        public object GetObjectForType(Type type)
+        {
+            return gameObject.GetComponent(type);
         }
 
         private List<AsyncMethod> executingMethods = new List<AsyncMethod>();
 
         public void Start()
         {
-            interpreterMap.Add(Guid, this);
+            BlocklyConnector.Dispatcher.Register(this);
         }
 
         public T ExecuteMethod<T>(T method) where T : AsyncMethod
@@ -51,7 +56,6 @@ namespace Farmbot
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            
         }
 
         void OnMouseOver()
@@ -65,12 +69,7 @@ namespace Farmbot
 
         public void SetTarget()
         {
-            WebsocketServer.SendMessage(new JsonMessage("SetTarget", new
-            {
-                targetID = Guid,
-                targetName = gameObject.name,
-                code = GameState.Instance.GetRobot(Guid).Code,
-            }));
+            BlocklyConnector.Dispatcher.SetTarget(this);
         }
 
         void Update()

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using BlocklyBridge;
 
 namespace Farmbot
 {
@@ -72,7 +73,6 @@ namespace Farmbot
 
         void Start()
         {
-
         }
 
         // Update is called once per frame
@@ -100,7 +100,7 @@ namespace Farmbot
         [ScriptableEvent(false)]
         public void OnClick()
         {
-            BlocklyGenerator.SendEvent(this, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            BlocklyGenerator.SendEvent(Interpreter, System.Reflection.MethodBase.GetCurrentMethod().Name);
         }
 
         [ScriptableMethod]

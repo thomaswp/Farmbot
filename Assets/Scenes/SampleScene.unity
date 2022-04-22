@@ -614,12 +614,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 629001019}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96d5466e783a6d2418f7d7c4c7a0cd3e, type: 3}
+  m_Script: {fileID: 11500000, guid: 3f82c5db211884e44beb04e879aa9050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   url: 127.0.0.1
   port: 8000
-  runSpeed: 10
   startingTarget: {fileID: 1729290844}
 --- !u!4 &629001021
 Transform:
@@ -2231,6 +2230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a865d9f6d3e3fb438ebfeeff53e39df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Guid: bb1e191c-eb20-470d-a531-23a908811c1c
 --- !u!1 &1547392907
 GameObject:
   m_ObjectHideFlags: 0
@@ -2758,6 +2758,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a865d9f6d3e3fb438ebfeeff53e39df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Guid: 564d8282-932c-465b-8332-7330abc3e019
 --- !u!1 &1860378551
 GameObject:
   m_ObjectHideFlags: 0
@@ -3059,6 +3060,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a865d9f6d3e3fb438ebfeeff53e39df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Guid: e6df813e-dcdf-482b-bb47-64c9e65a188a
 --- !u!61 &1982637844
 BoxCollider2D:
   m_ObjectHideFlags: 0
