@@ -11,6 +11,8 @@ namespace Farmbot
     {
         public string Guid = System.Guid.NewGuid().ToString();
 
+        private MethodQueue methodQueue = new MethodQueue();
+
         public string GetGuid()
         {
             return Guid;
@@ -26,32 +28,21 @@ namespace Farmbot
             return gameObject.GetComponent(type);
         }
 
-        private List<AsyncMethod> executingMethods = new List<AsyncMethod>();
+        public int CountCategory(string category)
+        {
+            return methodQueue.CountCategory(category);
+        }
 
         public void Start()
         {
             BlocklyConnector.Dispatcher.Register(this);
         }
 
-        public T ExecuteMethod<T>(T method) where T : AsyncMethod
-        {
-            executingMethods.Add(method);
-            return method;
-        }
-
         public AsyncMethod ExecuteMethod(string category)
         {
-            return ExecuteMethod(new AsyncMethod().SetBlockingCategory(category));
-        }
-
-        public AsyncMethod ExecuteMethod()
-        {
-            return ExecuteMethod(null);
-        }
-
-        public int CountCategory(string category)
-        {
-            return executingMethods.Where(m => m.BlockingCategory == category).Count();
+            AsyncMethod method = new AsyncMethod().SetBlockingCategory(category);
+            EnqueueMethod(method);
+            return method;
         }
 
         public void OnPointerClick(PointerEventData eventData)
@@ -74,20 +65,18 @@ namespace Farmbot
 
         void Update()
         {
+            methodQueue.Update();
+        }
 
-            HashSet<string> blockingCategories = new HashSet<string>();
-            for (int i = 0; i < executingMethods.Count; i++)
-            {
-                AsyncMethod method = executingMethods[i];
-                if (blockingCategories.Contains(method.BlockingCategory)) continue;
-                if (method.Update())
-                {
-                    executingMethods.RemoveAt(i--);
-                } else if (method.BlockingCategory != null)
-                {
-                    blockingCategories.Add(method.BlockingCategory);
-                }
-            }
+        public void EnqueueMethod(AsyncMethod method)
+        {
+            methodQueue.Enqueue(method);
+        }
+
+        public bool TryTestCode()
+        {
+            Debug.Log("Testing...");
+            return true;
         }
     }
 }

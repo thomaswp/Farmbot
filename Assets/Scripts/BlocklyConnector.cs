@@ -1,5 +1,6 @@
 
 using BlocklyBridge;
+using System;
 using UnityEngine;
 
 namespace Farmbot
@@ -39,7 +40,12 @@ namespace Farmbot
 
             Dispatcher.OnSave += Dispatcher_OnSave;
 
-            Dispatcher.Start(() =>
+            Type[] types = new Type[]
+            {
+                typeof(ActorActions)
+            };
+
+            Dispatcher.Start(types, () =>
             {
                 if (startingTarget)
                 {

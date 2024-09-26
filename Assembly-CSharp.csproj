@@ -58,29 +58,25 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\PlayerControls.cs" />
     <Compile Include="Assets\Scripts\GameState.cs" />
-    <Compile Include="Assets\Scripts\ActorActions.cs" />
-    <Compile Include="Assets\Scripts\BlocklyEnums.cs" />
-    <Compile Include="Assets\Scripts\Interpreter.cs" />
-    <Compile Include="Assets\UnityMainThreadDispatcher.cs" />
-    <Compile Include="Assets\Scripts\CameraControl.cs" />
-    <Compile Include="Assets\BlocklyBridge\obj\Debug\net5.0\BlocklyBridge.AssemblyInfo.cs" />
-    <Compile Include="Assets\BlocklyBridge\BlocklyGenerator.cs" />
-    <Compile Include="Assets\BlocklyBridge\BlocklyAttributes.cs" />
-    <Compile Include="Assets\BlocklyBridge\WebsocketServer.cs" />
-    <Compile Include="Assets\BlocklyBridge\ProgramState.cs" />
     <Compile Include="Assets\BlocklyBridge\Logger.cs" />
     <Compile Include="Assets\BlocklyBridge\Dispatcher.cs" />
-    <Compile Include="Assets\BlocklyBridge\IProgrammable.cs" />
+    <Compile Include="Assets\BlocklyBridge\WebsocketServer.cs" />
     <Compile Include="Assets\Scripts\BlocklyConnector.cs" />
+    <Compile Include="Assets\Scripts\ActorActions.cs" />
+    <Compile Include="Assets\Scripts\BlocklyEnums.cs" />
+    <Compile Include="Assets\BlocklyBridge\IProgrammable.cs" />
+    <Compile Include="Assets\Scripts\Interpreter.cs" />
+    <Compile Include="Assets\UnityMainThreadDispatcher.cs" />
+    <Compile Include="Assets\BlocklyBridge\BlocklyGenerator.cs" />
+    <Compile Include="Assets\BlocklyBridge\obj\Debug\net5.0\BlocklyBridge.AssemblyInfo.cs" />
+    <Compile Include="Assets\BlocklyBridge\BlocklyAttributes.cs" />
+    <Compile Include="Assets\Scripts\CameraControl.cs" />
+    <Compile Include="Assets\BlocklyBridge\ProgramState.cs" />
+    <Compile Include="Assets\BlocklyBridge\MethodQueue.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\JsonDotNet\link.xml" />
-    <None Include="Assets\JsonDotNet\Assemblies\Windows\Newtonsoft.Json.XML" />
-    <None Include="Assets\JsonDotNet\Assemblies\Standalone\Newtonsoft.Json.XML" />
-    <None Include="Assets\JsonDotNet\Assemblies\Standalone\Newtonsoft.Json.dll" />
-    <None Include="Assets\JsonDotNet\Assemblies\AOT\Newtonsoft.Json.dll" />
-    <None Include="Assets\JsonDotNet\Assemblies\AOT\Newtonsoft.Json.XML" />
-    <None Include="Assets\JsonDotNet\Assemblies\Windows\Newtonsoft.Json.dll" />
+    <None Include="Assets\BlocklyBridge\lib\Newtonsoft.Json.XML" />
+    <None Include="Assets\BlocklyBridge\lib\Newtonsoft.Json.dll" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -306,7 +302,7 @@
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.7f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>Assets\JsonDotNet\Assemblies\Standalone\Newtonsoft.Json.dll</HintPath>
+      <HintPath>Assets\BlocklyBridge\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.7f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>
