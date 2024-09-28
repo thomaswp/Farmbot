@@ -121,7 +121,9 @@ namespace Farmbot
             {
                 Direction = (Direction)((((int)Direction) + change + 4) % 4);
                 Debug.Log(Direction);
-            });
+            })
+            // TODO: Frames aren't a good measure of time
+            .Wait((int)(TransitionDuration * 100));
         }
 
         [ScriptableMethod]
