@@ -59,29 +59,31 @@
     <Compile Include="Assets\Scripts\PlayerControls.cs" />
     <Compile Include="Assets\Scripts\GameState.cs" />
     <Compile Include="Assets\BlocklyBridge\MethodQueue.cs" />
+    <Compile Include="Assets\Scripts\Resources\ResourcePanelPopulator.cs" />
     <Compile Include="Assets\BlocklyBridge\Logger.cs" />
     <Compile Include="Assets\BlocklyBridge\Dispatcher.cs" />
     <Compile Include="Assets\BlocklyBridge\WebsocketServer.cs" />
     <Compile Include="Assets\Scripts\Resources\ResourceManager.cs" />
+    <Compile Include="Assets\Scripts\Overworld\Buildings\BuildingButton.cs" />
     <Compile Include="Assets\Scripts\BlocklyConnector.cs" />
     <Compile Include="Assets\Scripts\ActorActions.cs" />
     <Compile Include="Assets\Scripts\BlocklyEnums.cs" />
     <Compile Include="Assets\BlocklyBridge\IProgrammable.cs" />
+    <Compile Include="Assets\Scripts\Overworld\Buildings\BuildUIPopulator.cs" />
+    <Compile Include="Assets\Scripts\Singleton\SingletonManager.cs" />
     <Compile Include="Assets\Scripts\Interpreter.cs" />
     <Compile Include="Assets\BlocklyBridge\obj\Debug\net5.0\BlocklyBridge.AssemblyInfo.cs" />
     <Compile Include="Assets\UnityMainThreadDispatcher.cs" />
     <Compile Include="Assets\Scripts\Overworld\Buildings\Building.cs" />
     <Compile Include="Assets\BlocklyBridge\BlocklyGenerator.cs" />
     <Compile Include="Assets\Scripts\Resources\ResourceSet.cs" />
+    <Compile Include="Assets\Scripts\Resources\ResourceAmountPanel.cs" />
     <Compile Include="Assets\BlocklyBridge\BlocklyAttributes.cs" />
     <Compile Include="Assets\Scripts\CameraControl.cs" />
     <Compile Include="Assets\BlocklyBridge\ProgramState.cs" />
     <Compile Include="Assets\Scripts\Overworld\Buildings\BuildingsManager.cs" />
-    <Compile Include="Assets\Scripts\Overworld\Buildings\BuildUIPopulator.cs" />
-    <Compile Include="Assets\Scripts\Singleton\SingletonManager.cs" />
-    <Compile Include="Assets\Scripts\Overworld\Buildings\BuildingButton.cs" />
-    <Compile Include="Assets\Scripts\Resources\ResourceAmountPanel.cs" />
-    <Compile Include="Assets\Scripts\Resources\ResourcePanelPopulator.cs" />
+    <Compile Include="Assets\Scripts\Overworld\Buildings\BuildingPreview.cs" />
+    <Compile Include="Assets\Scripts\Overworld\Buildings\BuildingObstructionsManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\BlocklyBridge\lib\Newtonsoft.Json.XML" />

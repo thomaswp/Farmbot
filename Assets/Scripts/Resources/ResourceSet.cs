@@ -45,7 +45,7 @@ namespace Farmbot.Resources
             {
                 this[resource] += resources[resource];
             }
-            OnChanged();
+            OnChanged?.Invoke();
         }
 
         public void Remove(ResourceSet resources)

@@ -1,7 +1,9 @@
-﻿using Farmbot.Resources;
+﻿using Fambot.Overworld.Buildings;
+using Farmbot.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -18,14 +20,18 @@ namespace Farmbot.Overworld.Buildings
         public int TileHeight;
         public Sprite Image;
 
-
-        public void Awake()
+        public void Start()
         {
-            
+            Debug.Log(transform.GetChild(0).name);
+            GetComponentInChildren<SpriteRenderer>(true).sprite = Image;
+            Vector3Int position = Vector3Int.FloorToInt(transform.position);
+            SingletonManager.GetSingleton<BuildingObstructionsManager>()
+                .MarkObstracted(position, TileWidth, TileHeight, true);
         }
 
         public bool TryToStartBuilding()
         {
+            BuildingsManager buildingsManager = SingletonManager.GetSingleton<BuildingsManager>();
             ResourceSet cost = Cost;
             var resources = SingletonManager.GetSingleton<ResourceManager>().resources;
             if (!resources.Contains(cost))
@@ -35,6 +41,7 @@ namespace Farmbot.Overworld.Buildings
                 return false;
             }
             resources.Remove(cost);
+            buildingsManager.StartPreviewBuilding(this);
 
             return true;
         }
