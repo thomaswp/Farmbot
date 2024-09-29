@@ -4,12 +4,6 @@ using UnityEngine;
 
 namespace Farmbot.Resources
 {
-
-    public enum Resource
-    {
-        Gold
-    }
-
     public class ResourceManager : MonoBehaviour
     {
         public ResourceAmount[] startingResources;

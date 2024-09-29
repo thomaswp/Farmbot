@@ -815,6 +815,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1010951351}
   - component: {fileID: 1010951352}
+  - component: {fileID: 1010951353}
   m_Layer: 0
   m_Name: Coop
   m_TagString: Untagged
@@ -856,6 +857,21 @@ MonoBehaviour:
   TileWidth: 3
   TileHeight: 4
   Image: {fileID: 21300000, guid: 888791609309e4f4e90947b4650ec216, type: 3}
+--- !u!114 &1010951353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010951350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8178258ae8ef60d4e9bf322e911c39db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resource: 2
+  productionTimeSeconds: 20
+  productionAmount: 1
 --- !u!1 &1071676458
 GameObject:
   m_ObjectHideFlags: 0
@@ -20832,7 +20848,7 @@ TilemapRenderer:
   m_SortingLayer: -2
   m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0.125, z: 0}
+  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
@@ -20895,6 +20911,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1383844468}
   - component: {fileID: 1383844469}
+  - component: {fileID: 1383844470}
   m_Layer: 0
   m_Name: Barn
   m_TagString: Untagged
@@ -20936,6 +20953,21 @@ MonoBehaviour:
   TileWidth: 4
   TileHeight: 4
   Image: {fileID: 21300000, guid: 22892571f73627c418c5c1165649047e, type: 3}
+--- !u!114 &1383844470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383844467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8178258ae8ef60d4e9bf322e911c39db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resource: 1
+  productionTimeSeconds: 10
+  productionAmount: 1
 --- !u!1 &1421606480
 GameObject:
   m_ObjectHideFlags: 0

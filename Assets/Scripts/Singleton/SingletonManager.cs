@@ -18,4 +18,12 @@ namespace Farmbot.Overworld.Buildings
             return instance.GetComponent<T>();
         }
     }
+
+    public static class SingletonManagerExtensions
+    {
+        public static T GetSingleton<T>(this MonoBehaviour monoBehaviour) where T : MonoBehaviour
+        {
+            return SingletonManager.GetSingleton<T>();
+        }
+    }
 }

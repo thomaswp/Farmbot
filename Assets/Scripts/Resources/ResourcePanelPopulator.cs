@@ -14,6 +14,7 @@ namespace Farmbot.Resources
         {
             foreach (Resource resource in System.Enum.GetValues(typeof(Resource)))
             {
+                if (!resource.Info().showInPanel) continue;
                 GameObject resourcePanel = Instantiate(resourcePanelPrefab, transform);
                 resourcePanel.GetComponent<ResourceAmountPanel>().resource = resource;
                 resourcePanel.transform.SetParent(resourcePanelPrefab.transform.parent);

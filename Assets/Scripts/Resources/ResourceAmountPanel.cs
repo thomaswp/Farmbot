@@ -20,7 +20,7 @@ namespace Farmbot.Resources
 
         private void OnChange()
         {
-            transform.GetComponentInChildren<Text>().text = $"{resource}: {resources.resources[resource]}";
+            transform.GetComponentInChildren<Text>().text = $"{resource.Info().name}: {resources.resources[resource]}";
         }
 
         // Update is called once per frame

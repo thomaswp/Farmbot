@@ -48,6 +48,12 @@ namespace Farmbot.Resources
             OnChanged?.Invoke();
         }
 
+        public void Add(Resource resource, int amount)
+        {
+            this[resource] += amount;
+            OnChanged?.Invoke();
+        }
+
         public void Remove(ResourceSet resources)
         {
             foreach (Resource resource in resources.resources.Keys)
