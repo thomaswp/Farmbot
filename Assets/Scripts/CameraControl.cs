@@ -12,7 +12,9 @@ namespace Farmbot
         // Start is called before the first frame update
         void Start()
         {
-
+            Vector3 position = player.transform.position;
+            position.z = transform.position.z;
+            transform.position = position;
         }
 
         // Update is called once per frame

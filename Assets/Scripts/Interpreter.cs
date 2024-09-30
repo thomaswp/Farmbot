@@ -35,6 +35,7 @@ namespace Farmbot
 
         public void Start()
         {
+            Debug.Log("Registering " + Guid);
             BlocklyConnector.Dispatcher.Register(this);
         }
 

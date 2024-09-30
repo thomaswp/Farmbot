@@ -27,6 +27,13 @@ namespace Farmbot.Overworld.Buildings
             Vector3Int position = Vector3Int.FloorToInt(transform.position);
             SingletonManager.GetSingleton<BuildingObstructionsManager>()
                 .MarkObstracted(position, TileWidth, TileHeight, true);
+
+
+            BoxCollider2D collider = gameObject.AddComponent<BoxCollider2D>();
+            collider.isTrigger = true;
+            SpriteRenderer spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            collider.size = spriteRenderer.size;
+            collider.offset = spriteRenderer.size / 2;
         }
 
         public bool TryToStartBuilding()

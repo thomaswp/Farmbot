@@ -28,7 +28,7 @@ namespace Farmbot
             }
         }
 
-        private void Start()
+        private void Awake()
         {
             Application.runInBackground = true;
             BlocklyBridge.Logger.Implementation = new UnityLogger();

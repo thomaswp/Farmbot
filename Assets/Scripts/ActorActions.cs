@@ -18,6 +18,8 @@ namespace Farmbot
         public Vector3Int cell;
         public int speed = 1;
         public Tilemap collisionTilemap;
+        public Tilemap plantTilemap;
+        public Direction startDirection;
 
         private float transitionTime = 0;
         private Vector3Int moveStart;
@@ -73,6 +75,7 @@ namespace Farmbot
 
         void Start()
         {
+            Direction = startDirection;
         }
 
         // Update is called once per frame
@@ -149,6 +152,19 @@ namespace Farmbot
             if (direction == Farmbot.Direction.Left) return Move(-1, 0);
             if (direction == Farmbot.Direction.Right) return Move(1, 0);
             return null;
+        }
+
+        [ScriptableMethod]
+        public AsyncMethod Harvest()
+        {
+            TileBase tile = plantTilemap.GetTile(cell);
+            if (tile != null)
+            {
+                plantTilemap.SetTile(cell, null);
+            }
+            // TODO: Animation?
+            return Interpreter.ExecuteMethod(MOVEMENT_CATEGORY)
+                .Wait((int)(TransitionDuration * 100));
         }
 
         public AsyncMethod Move(int dx, int dy)

@@ -23,24 +23,23 @@ namespace Farmbot.Overworld.Buildings
         {
             timeUntilComplete = productionTimeSeconds;
 
-            EventTrigger trigger = gameObject.transform.GetChild(0).gameObject.AddComponent<EventTrigger>();
-            EventTrigger.Entry entry = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.PointerClick;
-            entry.callback.AddListener(OnClick);
-            trigger.triggers.Add(entry);
-
+            // TODO: UI is probably better for scaling and resolution
             timer = gameObject.AddComponent<TextMesh>();
             timer.text = "";
+            timer.fontSize = 36;
+            timer.characterSize = 0.25f;
         }
 
-        void OnClick(BaseEventData data)
+        private void OnMouseDown()
         {
+            Debug.Log("Mouse Click!");
             if (timeUntilComplete <= 0)
             {
                 this.GetSingleton<ResourceManager>().resources.Add(resource, productionAmount);
                 timeUntilComplete = productionTimeSeconds;
             }
         }
+
 
         // Update is called once per frame
         void Update()
