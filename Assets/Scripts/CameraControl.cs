@@ -15,6 +15,7 @@ namespace Farmbot
             Vector3 position = player.transform.position;
             position.z = transform.position.z;
             transform.position = position;
+            // 
         }
 
         // Update is called once per frame

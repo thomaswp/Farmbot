@@ -10,6 +10,14 @@ using UnityEngine;
 
 namespace Farmbot.Overworld.Buildings
 {
+    [CreateAssetMenu(fileName = "BuildingInfo", menuName = "BuildingInfo")]
+    public class BuildingInfoTest : ScriptableObject
+    {
+        public string Name;
+        public string Description;
+        public ResourceAmount[] Cost;
+    }
+
     public class Building : MonoBehaviour
     {
         public string Name;

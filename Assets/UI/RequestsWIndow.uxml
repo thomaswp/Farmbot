@@ -1,13 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<engine:UXML
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:engine="UnityEngine.UIElements"
-    xmlns:editor="UnityEditor.UIElements"
-    xsi:noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd"
->
-    <engine:Label text="Hello World! From UXML" />
-    <engine:Button text="Button" />
-    <!--<engine:ScrollView>
-
-    </engine:ScrollView>-->
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:Template name="ResourceList" src="project://database/Assets/UI/ResourceList.uxml?fileID=9197481963319205126&amp;guid=5a82013d7888d214fb82f1221d8e40c9&amp;type=3#ResourceList" />
+    <Style src="project://database/Assets/UI/RequestsWIndow.uss?fileID=7433441132597879392&amp;guid=0a393f090e397e242aa1aca10d445840&amp;type=3#RequestsWIndow" />
+    <engine:VisualElement style="flex-grow: 1; position: absolute; top: 0; right: 0; left: 85%; bottom: 60%;">
+        <engine:ScrollView>
+            <engine:VisualElement style="flex-grow: 1;">
+                <engine:Label text="Label" name="requestName" />
+                <engine:Instance template="ResourceList" name="requirements" />
+                <engine:Instance template="ResourceList" name="rewards" />
+                <engine:Button text="Turn In!" name="turnInButton" />
+            </engine:VisualElement>
+        </engine:ScrollView>
+    </engine:VisualElement>
 </engine:UXML>
