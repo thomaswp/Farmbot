@@ -62,15 +62,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Interpreter.cs" />
+    <Compile Include="Assets\Scripts\Generated\ResourceList_Fields.cs" />
+    <Compile Include="Assets\Scripts\UIComponent\UIComponentBackingGenerator.cs" />
     <Compile Include="Assets\BlocklyBridge\MethodQueue.cs" />
     <Compile Include="Assets\BlocklyBridge\WebsocketServer.cs" />
     <Compile Include="Assets\BlocklyBridge\Logger.cs" />
     <Compile Include="Assets\BlocklyBridge\Dispatcher.cs" />
     <Compile Include="Assets\Scripts\Overworld\Buildings\ProductionBuilding.cs" />
     <Compile Include="Assets\Scripts\Resources\ResourceSet.cs" />
+    <Compile Include="Assets\Scripts\UIComponent\UXMLPreprocessor.cs" />
+    <Compile Include="Assets\Scripts\Generated\RequestsWindow_Fields.cs" />
+    <Compile Include="Assets\Scripts\UIComponent\UIComponent.cs" />
     <Compile Include="Assets\Scripts\Resources\Resources.cs" />
     <Compile Include="Assets\Scripts\Overworld\Requests\RequestInfo.cs" />
     <Compile Include="Assets\Scripts\Resources\ResourceManager.cs" />
+    <Compile Include="Assets\Scripts\UIComponents\ResourceList.cs" />
     <Compile Include="Assets\Scripts\Overworld\Buildings\BuildingsManager.cs" />
     <Compile Include="Assets\Scripts\BlocklyConnector.cs" />
     <Compile Include="Assets\Scripts\Overworld\Buildings\BuildingButton.cs" />
@@ -81,7 +87,6 @@
     <Compile Include="Assets\BlocklyBridge\BlocklyAttributes.cs" />
     <Compile Include="Assets\BlocklyBridge\BlocklyGenerator.cs" />
     <Compile Include="Assets\Scripts\Overworld\Buildings\Building.cs" />
-    <Compile Include="Assets\UI\RequestsWindow.cs" />
     <Compile Include="Assets\Scripts\Resources\ResourceAmountPanel.cs" />
     <Compile Include="Assets\Scripts\CameraControl.cs" />
     <Compile Include="Assets\Scripts\Overworld\Buildings\BuildingObstructionsManager.cs" />
@@ -97,10 +102,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\BlocklyBridge\lib\Newtonsoft.Json.XML" />
-    <None Include="Assets\UI\RequestsWIndow.uss" />
+    <None Include="Assets\UI\RequestsWindow.uss" />
     <None Include="Assets\BlocklyBridge\lib\Newtonsoft.Json.dll" />
     <None Include="Assets\UI\ResourceList.uxml" />
-    <None Include="Assets\UI\RequestsWIndow.uxml" />
+    <None Include="Assets\UI\RequestsWindow.uxml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
