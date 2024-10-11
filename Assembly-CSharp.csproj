@@ -70,17 +70,19 @@
     <Compile Include="Assets\BlocklyBridge\Dispatcher.cs" />
     <Compile Include="Assets\Scripts\Overworld\Buildings\ProductionBuilding.cs" />
     <Compile Include="Assets\Scripts\Resources\ResourceSet.cs" />
+    <Compile Include="Assets\Scripts\Data\ResourceInfo.cs" />
     <Compile Include="Assets\Scripts\UIComponent\UXMLPreprocessor.cs" />
     <Compile Include="Assets\Scripts\Generated\RequestsWindow_Fields.cs" />
     <Compile Include="Assets\Scripts\UIComponent\UIComponent.cs" />
     <Compile Include="Assets\Scripts\Resources\Resources.cs" />
     <Compile Include="Assets\Scripts\Overworld\Requests\RequestInfo.cs" />
+    <Compile Include="Assets\Scripts\UIComponents\ResourceAmount.cs" />
+    <Compile Include="Assets\Scripts\UIComponents\Request.cs" />
     <Compile Include="Assets\Scripts\Resources\ResourceManager.cs" />
     <Compile Include="Assets\Scripts\UIComponents\ResourceList.cs" />
     <Compile Include="Assets\Scripts\Overworld\Buildings\BuildingsManager.cs" />
     <Compile Include="Assets\Scripts\BlocklyConnector.cs" />
     <Compile Include="Assets\Scripts\Overworld\Buildings\BuildingButton.cs" />
-    <Compile Include="Assets\Scripts\Resources\ResourceInfo.cs" />
     <Compile Include="Assets\Scripts\ActorActions.cs" />
     <Compile Include="Assets\BlocklyBridge\IProgrammable.cs" />
     <Compile Include="Assets\BlocklyBridge\obj\Debug\net5.0\BlocklyBridge.AssemblyInfo.cs" />
@@ -92,20 +94,24 @@
     <Compile Include="Assets\Scripts\Overworld\Buildings\BuildingObstructionsManager.cs" />
     <Compile Include="Assets\Scripts\Singleton\SingletonManager.cs" />
     <Compile Include="Assets\Scripts\Overworld\Buildings\BuildingPreview.cs" />
+    <Compile Include="Assets\Scripts\Generated\Request_Fields.cs" />
     <Compile Include="Assets\Scripts\Overworld\Buildings\BuildUIPopulator.cs" />
     <Compile Include="Assets\Scripts\PlayerControls.cs" />
     <Compile Include="Assets\BlocklyBridge\ProgramState.cs" />
     <Compile Include="Assets\UnityMainThreadDispatcher.cs" />
     <Compile Include="Assets\Scripts\BlocklyEnums.cs" />
+    <Compile Include="Assets\Scripts\Generated\ResourceAmount_Fields.cs" />
     <Compile Include="Assets\Scripts\GameState.cs" />
     <Compile Include="Assets\Scripts\Resources\ResourcePanelPopulator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\UI\ResourceAmount.uxml" />
     <None Include="Assets\BlocklyBridge\lib\Newtonsoft.Json.XML" />
     <None Include="Assets\UI\RequestsWindow.uss" />
     <None Include="Assets\BlocklyBridge\lib\Newtonsoft.Json.dll" />
     <None Include="Assets\UI\ResourceList.uxml" />
     <None Include="Assets\UI\RequestsWindow.uxml" />
+    <None Include="Assets\UI\Request.uxml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

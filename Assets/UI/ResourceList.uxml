@@ -1,16 +1,9 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/RequestsWIndow.uss?fileID=7433441132597879392&amp;guid=0a393f090e397e242aa1aca10d445840&amp;type=3#RequestsWIndow" />
+    <Style src="project://database/Assets/UI/RequestsWindow.uss?fileID=7433441132597879392&amp;guid=0a393f090e397e242aa1aca10d445840&amp;type=3#RequestsWindow" />
     <engine:VisualElement style="flex-grow: 1;">
         <engine:Label text="Title:" name="title" style="font-size: 12px; padding-bottom: 0; margin-top: 0;" />
         <engine:VisualElement name="resource-list" class="resources" style="flex-grow: 1;">
-            <engine:VisualElement name="resource" style="flex-grow: 1;">
-                <engine:Label text="Label" name="name" class="resource-name" />
-                <engine:Label text="Label" name="quantity" />
-            </engine:VisualElement>
-            <engine:VisualElement name="resource" style="flex-grow: 1;">
-                <engine:Label text="Label" name="name" class="resource-name" />
-                <engine:Label text="Label" name="quantity" />
-            </engine:VisualElement>
+            <Assets.UI.ResourceAmount template="project://database/Assets/UI/ResourceAmount.uxml?fileID=9197481963319205126&amp;guid=615f727939050384dbd35b9830c9a0d5&amp;type=3#ResourceAmount" name="resource" />
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>

@@ -15,13 +15,28 @@ namespace Assets.UI
         [UxmlAttribute]
         public string title { get; set; }
 
+        [UxmlAttribute]
+        public Farmbot.Resources.ResourceAmount[] resourceAmounts { get; set; }
+
         public ResourceList()
         {
         }
 
         protected override void OnTreeLoaded()
         {
-            Title.text = title;
+            Fields.Title.text = title;
+            if (resourceAmounts == null)
+            {
+                return;
+            }
+            Fields.Resource.visible = false;
+            foreach (var amount in resourceAmounts)
+            {
+                var panel = new ResourceAmount();
+                panel.Amount = amount;
+                panel.template = Fields.Resource.template;
+                Fields.ResourceList.Add(panel);
+            }
         }
     }
 }

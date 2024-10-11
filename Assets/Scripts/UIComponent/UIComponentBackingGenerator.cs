@@ -106,6 +106,7 @@ namespace Assets.UIComponent
 
         private const string HEADER =
 @"
+using UnityEditor;
 using UnityEngine.UIElements;
 namespace Assets.UI
 {
@@ -132,14 +133,8 @@ namespace Assets.UI
         }
 ";
 
-        private const string LOAD_TEMPLATE =
-@"
-
-";
-
         private string GenerateBackingClass()
         {
-            HashSet<string> fieldNames = new HashSet<string>();
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine(HEADER);
@@ -147,22 +142,12 @@ namespace Assets.UI
             sb.AppendLine(@$"public partial class {name} : UIComponent.UIComponent");
             sb.AppendLine(@"{");
 
-            GenerateClassEnum(sb);
-
             sb.AppendLine(TEMPLATE);
 
-            for (int i = 0; i < fields.Count; i++)
-            {
-                Field field = fields[i];
-                if (fieldNames.Contains(field.name))
-                {
-                    fields.RemoveAt(i--);
-                    UnityEngine.Debug.LogWarning($"Duplicate Element name: {field.name}");
-                    continue;
-                }
-                fieldNames.Add(field.name);
-                GenerateField(sb, field);
-            }
+            GenerateClassEnum(sb);
+
+            GenerateFieldsClass(sb);
+
             GenerateLoadTemplate(sb);
             GenerateSetFields(sb);
             sb.Append("}");
@@ -191,6 +176,28 @@ namespace Assets.UI
             sb.AppendLine(@"}");
         }
 
+        private void GenerateFieldsClass(StringBuilder sb)
+        {
+            string className = $"{name}Fields";
+            HashSet<string> fieldNames = new HashSet<string>();
+            sb.AppendLine(@$"protected class {className}");
+            sb.AppendLine(@"{");
+            for (int i = 0; i < fields.Count; i++)
+            {
+                Field field = fields[i];
+                if (fieldNames.Contains(field.name))
+                {
+                    fields.RemoveAt(i--);
+                    UnityEngine.Debug.LogWarning($"Duplicate Element name: {field.name}");
+                    continue;
+                }
+                fieldNames.Add(field.name);
+                GenerateField(sb, field);
+            }
+            sb.AppendLine(@"}");
+            sb.AppendLine($"protected {className} Fields {{ get; private set; }} = new {className}();");
+        }
+
         private void GenerateSetFields(StringBuilder sb)
         {
             sb.AppendLine(@"protected override void SetFields()");
@@ -198,7 +205,7 @@ namespace Assets.UI
             foreach (Field field in fields)
             {
                 string name = ConvertToValidFieldName(field.name);
-                sb.AppendLine($"{name} = this.Q<{field.type.Name}>(\"{field.name}\");");
+                sb.AppendLine($"Fields.{name} = this.Q<{field.type.Name}>(\"{field.name}\");");
             }
             sb.AppendLine(@"}");
         }
@@ -206,7 +213,7 @@ namespace Assets.UI
         private void GenerateField(StringBuilder sb, Field field)
         {
             string name = ConvertToValidFieldName(field.name);
-            sb.AppendLine($@"public {field.type.Name} {name} {{ get; private set; }}");
+            sb.AppendLine($@"public {field.type.Name} {name} {{ get; set; }}");
         }
 
         public string ConvertToValidFieldName(string input)
@@ -230,11 +237,6 @@ namespace Assets.UI
             if (char.IsDigit(pascalCaseName[0]))
             {
                 pascalCaseName = "_" + pascalCaseName;
-            }
-
-            if (pascalCaseName == name)
-            {
-                pascalCaseName += "_";
             }
 
             // Step 6: Return the valid PascalCase C# field name

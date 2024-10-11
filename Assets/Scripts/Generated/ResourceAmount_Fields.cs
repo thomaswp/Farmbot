@@ -5,7 +5,7 @@ namespace Assets.UI
 {
 
 [UxmlElement]
-public partial class ResourceList : UIComponent.UIComponent
+public partial class ResourceAmount : UIComponent.UIComponent
 {
 
         private VisualTreeAsset _template;
@@ -30,24 +30,22 @@ protected static class Classes
 {
 const string UnityTextElement = "unity-text-element";
 const string UnityLabel = "unity-label";
-const string Resources = "resources";
+const string ResourceName = "resource-name";
 }
-protected class ResourceListFields
+protected class ResourceAmountFields
 {
-public Label Title { get; set; }
-public VisualElement ResourceList { get; set; }
-public ResourceAmount Resource { get; set; }
+public Label Name { get; set; }
+public Label Quantity { get; set; }
 }
-protected ResourceListFields Fields { get; private set; } = new ResourceListFields();
+protected ResourceAmountFields Fields { get; private set; } = new ResourceAmountFields();
 protected override void LoadTemplate()
 {
 if (template != null) return;
-template = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/ResourceList.uxml");
+template = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/ResourceAmount.uxml");
 }
 protected override void SetFields()
 {
-Fields.Title = this.Q<Label>("title");
-Fields.ResourceList = this.Q<VisualElement>("resource-list");
-Fields.Resource = this.Q<ResourceAmount>("resource");
+Fields.Name = this.Q<Label>("name");
+Fields.Quantity = this.Q<Label>("quantity");
 }
 }}

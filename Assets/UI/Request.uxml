@@ -1,0 +1,9 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/RequestsWindow.uss?fileID=7433441132597879392&amp;guid=0a393f090e397e242aa1aca10d445840&amp;type=3#RequestsWindow" />
+    <engine:VisualElement style="flex-grow: 1;">
+        <engine:Label text="Label" name="request-name" />
+        <Assets.UI.ResourceList template="project://database/Assets/UI/ResourceList.uxml?fileID=9197481963319205126&amp;guid=5a82013d7888d214fb82f1221d8e40c9&amp;type=3#ResourceList" title="Requirements:" name="requirements" />
+        <Assets.UI.ResourceList template="project://database/Assets/UI/ResourceList.uxml?fileID=9197481963319205126&amp;guid=5a82013d7888d214fb82f1221d8e40c9&amp;type=3#ResourceList" title="Rewards:" name="rewards" />
+        <engine:Button text="Turn In!" name="turn-in-button" />
+    </engine:VisualElement>
+</engine:UXML>

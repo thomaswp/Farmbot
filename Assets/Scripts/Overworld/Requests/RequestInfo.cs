@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets.Scripts.Overworld.Requests
+namespace Farmbot.Data.Requests
 {
     public class RequestInfo : ScriptableObject
     {

@@ -5,7 +5,7 @@ namespace Assets.UI
 {
 
 [UxmlElement]
-public partial class ResourceList : UIComponent.UIComponent
+public partial class Request : UIComponent.UIComponent
 {
 
         private VisualTreeAsset _template;
@@ -30,24 +30,26 @@ protected static class Classes
 {
 const string UnityTextElement = "unity-text-element";
 const string UnityLabel = "unity-label";
-const string Resources = "resources";
+const string UnityButton = "unity-button";
 }
-protected class ResourceListFields
+protected class RequestFields
 {
-public Label Title { get; set; }
-public VisualElement ResourceList { get; set; }
-public ResourceAmount Resource { get; set; }
+public Label RequestName { get; set; }
+public ResourceList Requirements { get; set; }
+public ResourceList Rewards { get; set; }
+public Button TurnInButton { get; set; }
 }
-protected ResourceListFields Fields { get; private set; } = new ResourceListFields();
+protected RequestFields Fields { get; private set; } = new RequestFields();
 protected override void LoadTemplate()
 {
 if (template != null) return;
-template = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/ResourceList.uxml");
+template = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/Request.uxml");
 }
 protected override void SetFields()
 {
-Fields.Title = this.Q<Label>("title");
-Fields.ResourceList = this.Q<VisualElement>("resource-list");
-Fields.Resource = this.Q<ResourceAmount>("resource");
+Fields.RequestName = this.Q<Label>("request-name");
+Fields.Requirements = this.Q<ResourceList>("requirements");
+Fields.Rewards = this.Q<ResourceList>("rewards");
+Fields.TurnInButton = this.Q<Button>("turn-in-button");
 }
 }}
